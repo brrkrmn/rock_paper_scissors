@@ -1,24 +1,19 @@
-//In our UI, the player should be able to play the game by clicking on buttons rather than typing their answer in a prompt.
-    //For now, remove the logic that plays exactly five rounds.
-    //Create three buttons, one for each selection. Add an event listener to the buttons that call your playRound function with the correct playerSelection every time a button is clicked. (you can keep the console.logs for this step)
-    //Add a div for displaying results and change all of your console.logs into DOM methods.
-    //Display the running score, and announce a winner of the game once one player reaches 5 points.
-    //You will likely have to refactor (rework/rewrite) your original code to make it work for this. That’s OK! Reworking old code is an important part of a programmer’s life.
-//Once you’re all done with your UI and made sure everything’s satisfactory, commit your changes to the rps-ui branch.
-
 const buttons = document.querySelector(".buttons").children;
 let playerSelection = null;
+let playerScores = document.querySelector(".header").children; 
+
+let you = 0, computer = 0;
 
 function addClickEventToButtons() {
     for (const button of buttons) {
         button.addEventListener("click", (event) => {
             playerSelection = button.value;
-            console.log(playerSelection);
+            let winner = playRound(playerSelection);
+            countScore(winner)
+            announceWinner(you, computer);
         });
     }
 }
-
-addClickEventToButtons();
 
 function getComputerChoice() {
     let computerSelection = Math.floor(Math.random() * 3) +1;
@@ -35,61 +30,54 @@ function getComputerChoice() {
 function getWinner(playerSelection, computerSelection) {
     let winner
     if (playerSelection === computerSelection) {
-        alert("Tie!");
+        document.querySelector(".result").textContent = ("Tie!");
         winner = null;
     } else if (playerSelection === "rock" && computerSelection == "paper") {
-        alert("You Lose! Paper beats Rock");
+        document.querySelector(".result").textContent = ("You Lose! Paper beats Rock");
         winner = "computer";
     } else if (playerSelection === "rock" && computerSelection == "scissors") {
-        alert("You win! Rock beats Scissors");
+        document.querySelector(".result").textContent = ("You win! Rock beats Scissors");
         winner = "you";
     } else if (playerSelection === "paper" && computerSelection == "rock") {
-        alert("You win! Paper beats rock");
+        document.querySelector(".result").textContent = ("You win! Paper beats rock");
         winner = "you";
     } else if (playerSelection === "paper" && computerSelection == "scissors") {
-        alert("You lose! Scissors beat paper");
+        document.querySelector(".result").textContent = ("You lose! Scissors beat paper");
         winner = "computer";
     } else if (playerSelection === "scissors" && computerSelection == "rock") {
-        alert("You lose! Rock beats scissors");
+        document.querySelector(".result").textContent = ("You lose! Rock beats scissors");
         winner = "computer";
     } else {
-        alert("You win! Scissors beat paper");
+        document.querySelector(".result").textContent = ("You win! Scissors beat paper");
         winner = "you";
     }
     return winner;
 }
 
-function playRound() {
-    const playerSelection = addClickEventToButtons();
+function playRound(playerSelection) {
     const computerSelection = getComputerChoice();
     const winner = getWinner(playerSelection, computerSelection);
     return winner;
 }
 
-function announceWinner(player1, player2) {
-    if (player1 > player2) {
-        alert("Winner is you");
-    } else if (player2 > player1) {
-        alert("Winner is computer");
-    } else {
-        alert("No winner");
-    } 
-}
-
-function game() {
-    let you = 0, computer = 0;
-    while (you != 3 && computer != 3) {
-        const winner = playRound();
-
-        if (winner == "you") {
-            you = you + 1;
-        } else if (winner == "computer") {
-            computer = computer + 1;
-        }
-        
-        console.log("You = " + you + " Computer = " + computer);
+function countScore(winner) {
+    if (winner === "you") {
+        you ++;
+        playerScores[0].textContent = ("You: " + you);
+    } else if (winner === "computer") {
+        computer ++;
+        playerScores[1].textContent = ("Computer: " + computer);
     }
-    announceWinner(you, computer);
 }
 
-//game()
+function announceWinner(you, computer) {
+    if (you === 3 || computer === 3) {
+        for (button of buttons) {
+            button.setAttribute("disabled", "");
+        }
+        document.querySelector(".result").textContent = "Game Over";
+    }
+}
+
+addClickEventToButtons();
+
