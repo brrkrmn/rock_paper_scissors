@@ -1,0 +1,31 @@
+body {
+    padding: 40px 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 80px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-evenly;
+    height: 60px;
+    line-height: 60px;
+}
+
+.player {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
+
+button {
+    width: 200px;
+    height: 160px;
+    border-style: hidden;
+    border-radius: 10%;
+}

@@ -1,8 +1,24 @@
-function getPlayerChoice() {
-    let playerSelection = prompt("Your turn: ");
-    playerSelection = playerSelection.toLowerCase();
-    return playerSelection;
+//In our UI, the player should be able to play the game by clicking on buttons rather than typing their answer in a prompt.
+    //For now, remove the logic that plays exactly five rounds.
+    //Create three buttons, one for each selection. Add an event listener to the buttons that call your playRound function with the correct playerSelection every time a button is clicked. (you can keep the console.logs for this step)
+    //Add a div for displaying results and change all of your console.logs into DOM methods.
+    //Display the running score, and announce a winner of the game once one player reaches 5 points.
+    //You will likely have to refactor (rework/rewrite) your original code to make it work for this. That’s OK! Reworking old code is an important part of a programmer’s life.
+//Once you’re all done with your UI and made sure everything’s satisfactory, commit your changes to the rps-ui branch.
+
+const buttons = document.querySelector(".buttons").children;
+let playerSelection = null;
+
+function addClickEventToButtons() {
+    for (const button of buttons) {
+        button.addEventListener("click", (event) => {
+            playerSelection = button.value;
+            console.log(playerSelection);
+        });
+    }
 }
+
+addClickEventToButtons();
 
 function getComputerChoice() {
     let computerSelection = Math.floor(Math.random() * 3) +1;
@@ -11,7 +27,7 @@ function getComputerChoice() {
     } else if (computerSelection == 2) {
         computerSelection = "paper";
     } else {
-        computerSelection = "scissors"
+        computerSelection = "scissors";
     }
     return computerSelection;
 }
@@ -44,7 +60,7 @@ function getWinner(playerSelection, computerSelection) {
 }
 
 function playRound() {
-    const playerSelection = getPlayerChoice();
+    const playerSelection = addClickEventToButtons();
     const computerSelection = getComputerChoice();
     const winner = getWinner(playerSelection, computerSelection);
     return winner;
@@ -76,4 +92,4 @@ function game() {
     announceWinner(you, computer);
 }
 
-game()
+//game()
